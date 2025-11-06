@@ -18,9 +18,6 @@
 </head>
 <body class="bg-light">
 <div class="container py-5">
-    <div class="text-center mb-4">
-        <img src="https://cpg-pars.com/wp-content/uploads/2023/09/CPG-LOGO-1-e1695818130726.png" alt="CPG" class="img-fluid" style="max-height:120px;">
-    </div>
     <div class="card shadow-sm">
         <div class="card-body text-center">
             <h1 class="h4 mb-3">شرکت بین المللی معدنی و صنعتی سی‌پی‌جی پارس</h1>

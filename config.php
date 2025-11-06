@@ -1,6 +1,6 @@
 <?php
 $host = 'localhost';
-$db   = 'cpgparsi_TenderCPG40m';
+$db   = 'cpgparsi_Tender40m';
 $user = 'cpgparsi_pedramtender';
 $pass = 'akLj&#HIq,?6WDx*';
 $conn = new mysqli($host, $user, $pass, $db);
