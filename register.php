@@ -1,18 +1,20 @@
 <?php
 include 'config.php';
+require_once __DIR__ . '/includes/helpers.php';
+
 $message = '';
 $settings = $conn->query("SELECT expert_name, expert_phone FROM settings ORDER BY id DESC LIMIT 1")->fetch_assoc();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $company_id = preg_replace('/\D/', '', $_POST['company_id'] ?? '');
+    $company_id = sanitize_company_id($_POST['company_id'] ?? '');
     $company_name = trim($_POST['company_name'] ?? '');
-    if ($company_id && $company_name) {
+    if ($company_id && is_valid_company_name($company_name)) {
         $ip = $_SERVER['REMOTE_ADDR'];
         $ua = $_SERVER['HTTP_USER_AGENT'] ?? '';
         $stmt = $conn->prepare("INSERT INTO companies (company_id, company_name, ip_address, user_agent) VALUES (?,?,?,?)");
         $stmt->bind_param('isss', $company_id, $company_name, $ip, $ua);
         $stmt->execute();
         $stmt->close();
-        $message = "شناسه شما ثبت شد. برای احراز هویت، مدارک حقوقی شرکت را به شماره {$settings['expert_phone']} (کارشناس: {$settings['expert_name']}) ارسال کنید. پس از تایید، امکان دانلود فایل فراهم می‌شود.";
+        $message = build_verification_message($settings ?? []);
     }
 }
 ?>

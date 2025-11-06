@@ -1,9 +1,10 @@
 <?php
 include 'config.php';
+require_once __DIR__ . '/includes/helpers.php';
 $message='';
 $download='';
 if($_SERVER['REQUEST_METHOD']==='POST'){
-    $company_id=preg_replace('/\D/','',$_POST['company_id']??'');
+    $company_id=sanitize_company_id($_POST['company_id']??'');
     if($company_id){
         $stmt=$conn->prepare("SELECT is_approved FROM companies WHERE company_id=?");
         $stmt->bind_param('i',$company_id);
@@ -12,7 +13,7 @@ if($_SERVER['REQUEST_METHOD']==='POST'){
         $stmt->close();
         if(!$result){
             $message='شناسه نامعتبر است.';
-        }elseif($result['is_approved']!=1){
+        }elseif(!can_download_for_company($result)){
             $message='شناسه شما هنوز تایید نشده است.';
         }else{
             $settings=$conn->query("SELECT download_link FROM settings ORDER BY id DESC LIMIT 1")->fetch_assoc();
